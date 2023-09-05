@@ -26,7 +26,8 @@ export default class CrawlBase {
             timeout: 20000,
             ...axiosConfig,
         }
-
+        this.id = id;
+        this.name = name;
         this.client = axios.create(config);
         this.baseURL = axiosConfig.baseURL;
 
