@@ -7,7 +7,7 @@ export default class CrawlBase {
     id: string;
     name: string;
     baseURL: string;
-    blacklist: string[];
+    blacklistTitles: string[];
     monitor: Monitor;
     locales: string[];
     scrapingPages: number;
@@ -50,7 +50,70 @@ export default class CrawlBase {
         return false;
     }
 
+    protected async scrapePages(
+        scrapeFn: (page: number) => Promise<any>,
+        numOfPages: number,
+    ) {
+        const list = [];
 
+        for (let page = 1; page <= numOfPages; page++) {
+            const result = await scrapeFn(page);
+            console.log(`Scraped page ${page} [${this.id}]`);
+
+            // @ts-ignore
+            if (result?.length === 0) {
+                break;
+            }
+
+            list.push(result);
+        }
+
+        return this.removeBlacklistSources(list.flat());
+    }
+
+    protected async scrapeAllPages(scrapeFn: (page: number) => Promise<any>) {
+        const list = [];
+        let isEnd = false;
+        let page = 1;
+
+        while (!isEnd) {
+            try {
+                const result = await scrapeFn(page).catch((err) =>
+                    console.log(err),
+                );
+
+                if (page === 5) {
+                    isEnd = true;
+
+                    break;
+                }
+
+                console.log(`Scraped page ${page} - ${this.id}`);
+
+                if (result.length === 0) {
+                    isEnd = true;
+
+                    break;
+                }
+
+                page++;
+
+                list.push(result);
+            } catch (err) {
+                isEnd = true;
+            }
+        }
+
+        return this.removeBlacklistSources(list.flat());
+    }
+
+    protected async removeBlacklistSources<T extends any | any>(
+        sources: T[],
+    ) {
+        return sources.filter((source) =>
+            source?.titles.some((title) => !this.blacklistTitles.includes(title)),
+        );
+    }
 
 
 }
