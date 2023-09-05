@@ -110,7 +110,7 @@ export default class CrawlBase {
     protected async removeBlacklistSources<T extends any | any>(
         sources: T[],
     ) {
-        return sources.filter((source) =>
+        return sources.filter((source: any) =>
             source?.titles.some((title) => !this.blacklistTitles.includes(title)),
         );
     }
