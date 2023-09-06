@@ -2,6 +2,8 @@ import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios';
 import { RequireAtLeastOne } from '../utils/types';
 import { SourceAnime, SourceManga } from '../types/data';
 import Monitor from './Monitor';
+import * as AxiosLogger from 'axios-logger';
+import axiosRetry from 'axios-retry';
 
 export default class CrawlBase {
     client: AxiosInstance;
@@ -37,12 +39,13 @@ export default class CrawlBase {
 
             return data;
         }
-
+        
+        // axios retry try to retrieve data again if it fails
+        axiosRetry(this.client, { retries: 3 });
 
         this.monitor = new Monitor(
             defaultMonitor,
             this.shouldMonitorChange.bind(this),
-
         );
 
 
@@ -61,8 +64,6 @@ export default class CrawlBase {
         for (let page = 1; page <= numOfPages; page++) {
             const result = await scrapeFn(page);
             console.log(`Scraped page ${page} [${this.id}]`);
-
-            // @ts-ignore
             if (result?.length === 0) {
                 break;
             }
