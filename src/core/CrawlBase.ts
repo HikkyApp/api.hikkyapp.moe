@@ -1,5 +1,6 @@
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios';
 import { RequireAtLeastOne } from '../utils/types';
+import { SourceAnime, SourceManga } from '../types/data';
 import Monitor from './Monitor';
 
 export default class CrawlBase {
@@ -26,7 +27,8 @@ export default class CrawlBase {
             timeout: 20000,
             ...axiosConfig,
         }
-
+        this.id = id;
+        this.name = name;
         this.client = axios.create(config);
         this.baseURL = axiosConfig.baseURL;
 
@@ -82,7 +84,7 @@ export default class CrawlBase {
                     console.log(err),
                 );
 
-                if (page === 5) {
+                if (!result) {
                     isEnd = true;
 
                     break;
@@ -107,10 +109,10 @@ export default class CrawlBase {
         return this.removeBlacklistSources(list.flat());
     }
 
-    protected async removeBlacklistSources<T extends any | any>(
+    protected async removeBlacklistSources<T extends SourceAnime | SourceManga>(
         sources: T[],
     ) {
-        return sources.filter((source: any) =>
+        return sources.filter((source) =>
             source?.titles.some((title) => !this.blacklistTitles.includes(title)),
         );
     }

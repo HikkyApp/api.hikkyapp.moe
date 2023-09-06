@@ -1,0 +1,41 @@
+[33mcommit 5e22ca75907a39b6c9f03af7ba316bf0e514c8d8[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: Hikkywannafly <ggraygon@gmail.com>
+Date:   Tue Sep 5 10:55:56 2023 +0700
+
+    feat: anilist types
+
+[33mcommit 7bec2676e605813a8e535bff11b8c85a221ad3bb[m
+Author: Hikkywannafly <ggraygon@gmail.com>
+Date:   Tue Sep 5 10:53:34 2023 +0700
+
+    chore: fix types
+
+[33mcommit e10514da6a58d7e14a395d3a61b18eb3825b142e[m
+Author: Hikkywannafly <ggraygon@gmail.com>
+Date:   Tue Sep 5 10:48:12 2023 +0700
+
+    feat: CrawlBase add scrapePages logic
+
+[33mcommit 159cc759b91c3ed8d0f8da4cc41d927ce29b235a[m
+Author: Hikkywannafly <ggraygon@gmail.com>
+Date:   Tue Sep 5 09:54:59 2023 +0700
+
+    feat: logic CrawlBase
+
+[33mcommit 199e6b84e9746fa1af50c6957dd409387e1e42fb[m
+Author: Hikkywannafly <101345142+hikkyne@users.noreply.github.com>
+Date:   Mon Sep 4 11:11:09 2023 +0700
+
+    feat: logic monitor
+
+[33mcommit 51a8ce8b9b4a4bf701df3cc35844aaff517b6552[m
+Author: Hikkywannafly <ggraygon@gmail.com>
+Date:   Tue Aug 29 00:08:20 2023 +0700
+
+    Dockerizing
+
+[33mcommit eea0ef61f4fb9575862c550bf84b937e31499de1[m
+Author: Hikkywannafly <ggraygon@gmail.com>
+Date:   Mon Aug 28 14:43:07 2023 +0700
+
+    Initial scaffold
