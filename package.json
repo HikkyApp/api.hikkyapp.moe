@@ -7,13 +7,14 @@
   "scripts": {
     "start": "node build/src/main.js",
     "test": "jest",
-    "test:watch": "jest --watch",
     "build": "tsc -p tsconfig.json",
     "prebuild": "npm run lint",
     "eslint": "eslint --ext .ts src/** --fix",
     "prettier": "prettier --write .",
     "lint": "npm run eslint && npm run prettier",
-    "dev": "nodemon"
+    "dev": "nodemon",
+    "test:watch": "jest --watch",
+    "test:func": "jest test/testfnc.test.ts"
   },
   "repository": {
     "type": "git",
@@ -43,6 +44,7 @@
     "jest": "^29.6.4",
     "nodemon": "^3.0.1",
     "prettier": "3.0.2",
+    "ts-jest": "^29.1.1",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2"
   }
