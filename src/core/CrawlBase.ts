@@ -39,7 +39,7 @@ export default class CrawlBase {
 
             return data;
         }
-        
+
         // axios retry try to retrieve data again if it fails
         axiosRetry(this.client, { retries: 3 });
 
@@ -47,7 +47,6 @@ export default class CrawlBase {
             defaultMonitor,
             this.shouldMonitorChange.bind(this),
         );
-
 
     }
 
