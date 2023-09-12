@@ -1,9 +1,11 @@
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios';
 import { RequireAtLeastOne } from '../utils/types';
 import { SourceAnime, SourceManga } from '../types/data';
-import { isHTML } from '../utils/index';
+import { isHTML, isValidUrl, isVietnamese } from '../utils';
+import { match, Path } from 'node-match-path';
 import Monitor from './Monitor';
-import * as AxiosLogger from 'axios-logger';
+import { errorLogger } from 'axios-logger';
+import logger from '../logger';
 import axiosRetry from 'axios-retry';
 
 export default class CrawlBase {
@@ -32,6 +34,8 @@ export default class CrawlBase {
         }
         this.id = id;
         this.name = name;
+        this.blacklistTitles = ['live action'];
+        this.scrapingPages = 2;
         this.client = axios.create(config);
         this.baseURL = axiosConfig.baseURL;
 
@@ -48,6 +52,15 @@ export default class CrawlBase {
             defaultMonitor,
             this.shouldMonitorChange.bind(this),
         );
+
+        const axiosErrorLogger = (error: AxiosError) => {
+            return errorLogger(error, {
+                logger: logger.error.bind(logger),
+                data: !isHTML(error?.response?.data),
+            });
+        };
+
+        this.client.interceptors.request.use((config) => config, axiosErrorLogger);
 
     }
 
@@ -116,6 +129,58 @@ export default class CrawlBase {
         return sources.filter((source) =>
             source?.titles.some((title) => !this.blacklistTitles.includes(title)),
         );
+    }
+
+    /**
+    *
+    * @param titles an array of titles
+    * @returns titles that are not Vietnamese and a Vietnamese title
+    */
+    protected filterTitles(titles: string[]) {
+        const totalTitles = [...new Set(titles)].filter(
+            (title) => !this.blacklistTitles.includes(title.toLowerCase()),
+        );
+
+        const vietnameseTitle = totalTitles.filter(isVietnamese)[0] || null;
+        const nonVietnameseTitles = totalTitles.filter(
+            (title) => !isVietnamese(title),
+        );
+
+        return {
+            titles: nonVietnameseTitles,
+            vietnameseTitle,
+        };
+    }
+
+    /**
+     * Separate the title in case the title has multiple titles (e.g. "One Piece | Vua Hải Tặc")
+     * @param title string
+     * @param separators an array of separators
+     * @returns an array of titles
+     */
+    parseTitle(title: string, separators = ['|', ',', ';', '-', '/']) {
+        const separator = separators.find((separator) => title.includes(separator));
+
+        const regex = new RegExp(`\\${separator}\\s+`);
+
+        return title
+            .split(regex)
+            .map((title) => title.trim())
+            .filter((title) => title);
+    }
+
+    /**
+    *
+    * @param path pattern of the parser (e.g. /anime/:id)
+    * @param url the url or path (e.g. /anime/23)
+    * @returns object with the matched params (e.g. { id: 23 })
+    */
+    protected parseString(path: Path, url: string) {
+        if (isValidUrl(url)) {
+            url = new URL(url).pathname;
+        }
+
+        return match(path, url).params;
     }
 
 

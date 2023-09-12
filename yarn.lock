@@ -1408,6 +1408,7 @@ __metadata:
     eslint-plugin-jest: ^27.2.3
     express: ^4.18.2
     jest: ^29.6.4
+    node-match-path: ^0.6.3
     nodemon: ^3.0.1
     prettier: 3.0.2
     ts-jest: ^29.1.1
@@ -4286,6 +4287,13 @@ __metadata:
   version: 0.4.0
   resolution: "node-int64@npm:0.4.0"
   checksum: d0b30b1ee6d961851c60d5eaa745d30b5c95d94bc0e74b81e5292f7c42a49e3af87f1eb9e89f59456f80645d679202537de751b7d72e9e40ceea40c5e449057e
+  languageName: node
+  linkType: hard
+
+"node-match-path@npm:^0.6.3":
+  version: 0.6.3
+  resolution: "node-match-path@npm:0.6.3"
+  checksum: d515bc069f293688109c058ee02567528fdaa856290d362b80a2254734975014e4eefcdcc5164a8adfd5560aa870e277c97fe8be648074d5088056cf61553c7c
   languageName: node
   linkType: hard
 
