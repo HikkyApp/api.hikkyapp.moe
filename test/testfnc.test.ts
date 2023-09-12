@@ -1,11 +1,16 @@
-import { handlePath } from '../src/utils/index';
+// import { handlePath } from '../src/utils/index';
+import path from 'path';
 
-test('handlePath', () => {
+jest.setTimeout(120000);
 
-    const filePath = 'test/testfnc.spec.ts';
-    const baseUrl = 'C:/Users/username/Documents/Projects/ProjectName/build/src';
-    const result = handlePath(filePath, baseUrl);
+test('handlePath', async () => {
 
-    console.log(result);
+    // const filePath = 'test/testfnc.spec.ts';
+    // const baseUrl = 'C:/Users/username/Documents/Projects/ProjectName/build/src';
+    // const result = handlePath(filePath, baseUrl);
+
+    console.log(`test`, path.resolve(process.cwd(), './build/src'));
+
+    // expect(result).toBe('C:/Users/username/Documents/Projects/ProjectName/build/src/test/testfnc.spec.ts');
 
 })

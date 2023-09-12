@@ -1,7 +1,8 @@
 import CrawlBase from "./CrawlBase";
 import { MediaType } from '../types/anilist';
 import { RequireAtLeastOne } from "../utils/types";
-import { SourceAnime } from "../types/data"
+import { SourceAnime } from "../types/data";
+import { writeFile } from '../utils/index';
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios';
 
 export default class AnimeCrawl extends CrawlBase {
@@ -24,19 +25,29 @@ export default class AnimeCrawl extends CrawlBase {
 
         const data = await this.scrapeAllPages(this.scrapeAnimePage.bind(this));
 
+        writeFile(`./data/${this.id}.json`, JSON.stringify(data, null, 2));
 
-        return data
+        return data;
+    }
 
+
+
+
+    // scrape anime by page
+    async scrapeAnimePages(numOfPages: number): Promise<SourceAnime[]> {
+        const sourceAnime: SourceAnime[] = await this.scrapePages(
+            this.scrapeAnimePage.bind(this),
+            numOfPages,
+        );
+
+        return sourceAnime.filter((anime) => anime?.episodes?.length);
     }
 
     async scrapeAnimePage(_page: number): Promise<SourceAnime[]> {
-
         throw new Error(`Method scrapeAnimePage not implemented`);
-
     }
-
-
-
-
+    async scrapeAnime(_animeId: string): Promise<SourceAnime> {
+        throw new Error('Method scrapeAnime not implemented');
+    }
 
 }

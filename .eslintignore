@@ -1,3 +1,4 @@
 /**/*.js
 src/cli/templates/*
-test
+test/*.js
+test/*.ts
