@@ -23,7 +23,6 @@ export default class Monitor {
         this.interval = 1_200_000; //20 minutes
         this.isDisabled = false;
         this.isRequestDisabled = false;
-
     }
 
     onMonitorChange() {

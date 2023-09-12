@@ -23,7 +23,6 @@ export default class CrawlBase {
         name: string,
         axiosConfig: RequireAtLeastOne<AxiosRequestConfig, 'baseURL'>,
     ) {
-
         const config = {
             headers: {
                 referer: axiosConfig.baseURL,
@@ -64,6 +63,7 @@ export default class CrawlBase {
 
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     shouldMonitorChange(_oldPage: any, _newPage: any): boolean {
         return false;
     }

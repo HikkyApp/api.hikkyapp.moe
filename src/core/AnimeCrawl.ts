@@ -3,7 +3,7 @@ import { MediaType } from '../types/anilist';
 import { RequireAtLeastOne } from "../utils/types";
 import { SourceAnime } from "../types/data";
 import { writeFile } from '../utils/index';
-import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios';
+import { AxiosRequestConfig } from 'axios';
 
 export default class AnimeCrawl extends CrawlBase {
     monitorURl: string;
@@ -39,10 +39,11 @@ export default class AnimeCrawl extends CrawlBase {
 
         return sourceAnime.filter((anime) => anime?.episodes?.length);
     }
-
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async scrapeAnimePage(_page: number): Promise<SourceAnime[]> {
         throw new Error(`Method scrapeAnimePage not implemented`);
     }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async scrapeAnime(_animeId: string): Promise<SourceAnime> {
         throw new Error('Method scrapeAnime not implemented');
     }

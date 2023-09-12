@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "ES2017",
+    "target": "es6",
     "module": "commonjs",
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
@@ -18,10 +18,7 @@
     "noImplicitThis": false,
     "strictNullChecks": false,
     "esModuleInterop": true,
-    "skipLibCheck": true,
-    "rootDir": ".",
-    "outDir": "build",
-    "removeComments": true
+    "skipLibCheck": true
   },
   "exclude": [
     "src/cli/templates/*",
