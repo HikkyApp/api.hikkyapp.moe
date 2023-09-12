@@ -30,9 +30,6 @@ export default class AnimeCrawl extends CrawlBase {
         return data;
     }
 
-
-
-
     // scrape anime by page
     async scrapeAnimePages(numOfPages: number): Promise<SourceAnime[]> {
         const sourceAnime: SourceAnime[] = await this.scrapePages(

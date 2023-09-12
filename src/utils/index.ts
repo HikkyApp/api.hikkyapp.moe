@@ -25,3 +25,8 @@ export const writeFile = (
 
     fs.writeFileSync(fileDir, data, { flag: 'w' });
 };
+
+
+export const isHTML = (str: string) => {
+    return /<[a-z][\s\S]*>/i.test(str);
+};

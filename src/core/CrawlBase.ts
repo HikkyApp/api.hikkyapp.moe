@@ -1,6 +1,7 @@
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios';
 import { RequireAtLeastOne } from '../utils/types';
 import { SourceAnime, SourceManga } from '../types/data';
+import { isHTML } from '../utils/index';
 import Monitor from './Monitor';
 import * as AxiosLogger from 'axios-logger';
 import axiosRetry from 'axios-retry';
