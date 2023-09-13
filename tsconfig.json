@@ -18,7 +18,10 @@
     "noImplicitThis": false,
     "strictNullChecks": false,
     "esModuleInterop": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "rootDir": ".",
+    "outDir": "build",
+    "removeComments": true
   },
   "exclude": [
     "src/cli/templates/*",

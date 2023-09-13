@@ -2890,7 +2890,7 @@ export interface MediaListCollectionArgs {
 }
 
 /** Collection of all the possible media genres */
-export interface GenreCollectionArgs { }
+export interface GenreCollectionArgs {}
 
 /** Collection of all the possible media tags */
 export interface MediaTagCollectionArgs {
@@ -2913,7 +2913,7 @@ export interface UserArgs {
 }
 
 /** Get the currently authenticated user */
-export interface ViewerArgs { }
+export interface ViewerArgs {}
 
 /** Notification query */
 export interface NotificationArgs {
@@ -3107,10 +3107,10 @@ export interface MarkdownArgs {
   markdown: string;
 }
 
-export interface AniChartUserArgs { }
+export interface AniChartUserArgs {}
 
 /** Site statistics query */
-export interface SiteStatisticsArgs { }
+export interface SiteStatisticsArgs {}
 
 export interface UpdateUserArgs {
   /** User's about/bio text*/

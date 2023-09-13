@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node build/src/main.js",
     "test": "jest",
-    "build": "tsc -p tsconfig.release.json",
+    "build": "tsc -p tsconfig.json",
     "prebuild": "npm run lint",
     "eslint": "eslint --ext .ts src/** --fix",
     "prettier": "prettier --write .",
@@ -42,7 +42,7 @@
     "@types/jest": "^29.5.4",
     "@types/node": "^20.5.7",
     "@typescript-eslint/eslint-plugin": "latest",
-    "@typescript-eslint/parser": "^6.7.0",
+    "@typescript-eslint/parser": "latest",
     "axios-logger": "^2.7.0",
     "concurrently": "^8.2.1",
     "eslint": "^8.48.0",
