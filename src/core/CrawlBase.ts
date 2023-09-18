@@ -7,6 +7,7 @@ import Monitor from './Monitor';
 import { errorLogger } from 'axios-logger';
 import logger from '../logger';
 import axiosRetry from 'axios-retry';
+import supabase from '../lib/supabase';
 
 export default class CrawlBase {
   client: AxiosInstance;
@@ -90,8 +91,13 @@ export default class CrawlBase {
  * Run this method to push scraper's info to Supabase
  */
   init() {
-    console.log('Pushing scraper info to database');
-
+    return supabase.from('sources').upsert(
+      {
+        id: this.id,
+        name: this.name,
+        locales: this.locales,
+      }
+      , { ignoreDuplicates: true });
   }
 
 
