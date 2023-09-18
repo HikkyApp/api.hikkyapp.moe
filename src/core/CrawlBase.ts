@@ -86,6 +86,15 @@ export default class CrawlBase {
     return this.removeBlacklistSources(list.flat());
   }
 
+  /**
+ * Run this method to push scraper's info to Supabase
+ */
+  init() {
+    console.log('Pushing scraper info to database');
+
+  }
+
+
   protected async scrapeAllPages(scrapeFn: (page: number) => Promise<any>) {
     const list = [];
     let isEnd = false;

@@ -1,6 +1,7 @@
 import { Command } from 'commander';
 import { select } from '@inquirer/prompts';
 import sources from '../../sources';
+// import { getScraper } from '../../sources';
 export default function (program: Command) {
     return program
         .command('crawl:init')
@@ -12,6 +13,7 @@ export default function (program: Command) {
                     choices: [
                         { name: "Anime", value: "anime" },
                         { name: "Manga", value: "manga" },
+                        { name: "Comming Soon", value: "cs" }
                     ],
                 });
 
@@ -25,9 +27,14 @@ export default function (program: Command) {
                     })),
                 });
 
+                // const scraper = getScraper(id);
 
+                // console.log('Pushing scraper info to database');
+
+                // await scraper.init();
 
                 console.log(type, id);
+
             } catch (error) {
                 console.log(error);
                 program.error(error);

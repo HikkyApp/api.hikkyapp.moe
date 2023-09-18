@@ -1,6 +1,4 @@
-// import { handlePath } from '../src/utils/index';
-import path from 'path';
-
+import AnimeVietsubScraper from '../src/sources/anime/avs';
 jest.setTimeout(120000);
 
 test('handlePath', async () => {
@@ -8,7 +6,9 @@ test('handlePath', async () => {
   // const baseUrl = 'C:/Users/username/Documents/Projects/ProjectName/build/src';
   // const result = handlePath(filePath, baseUrl);
 
-  console.log(`test`, path.resolve(process.cwd(), './build/src'));
+  const result = new AnimeVietsubScraper();
+
+  console.log(result);
 
   // expect(result).toBe('C:/Users/username/Documents/Projects/ProjectName/build/src/test/testfnc.spec.ts');
 });
