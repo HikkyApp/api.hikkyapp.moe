@@ -2,6 +2,8 @@ import { Command } from 'commander';
 import { select } from '@inquirer/prompts';
 import sources from '../../sources';
 import { getScraper } from '../../sources';
+import AnimeCrawl from '../../core/AnimeCrawl';
+import { readfile } from '../../utils';
 export default function (program: Command) {
   return program
     .command('crawl:init')
@@ -33,10 +35,37 @@ export default function (program: Command) {
 
         await scraper.init();
 
-        console.log(type, id);
+        console.log(`Starting scraper source: ${id} - This action may take a few hour to complete`)
+
+        if (type === 'anime') {
+          const scraperAnime = scraper as AnimeCrawl;
+
+          const source = readFileAndFallBack(
+            `./data/${id}.json`,
+            () => scraperAnime.scrapeAllAnimePages(),
+          )
+
+          console.log(source)
+
+        }
       } catch (error) {
         console.log(error);
         program.error(error);
       }
     });
+}
+
+const readFileAndFallBack = <T>(
+  path: string,
+  FallBackFn?: () => Promise<T>,
+) => {
+
+  const fileData: T = JSON.parse(readfile(path));
+
+  console.log(path, !!fileData);
+
+  if (!fileData) return FallBackFn();
+
+  return fileData;
+
 }

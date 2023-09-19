@@ -113,7 +113,7 @@ export default class CrawlBase {
       try {
         const result = await scrapeFn(page).catch((err) => console.log(err));
 
-        if (!result) {
+        if (page === 3) {
           isEnd = true;
 
           break;
