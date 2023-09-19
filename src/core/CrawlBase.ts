@@ -88,18 +88,21 @@ export default class CrawlBase {
   }
 
   /**
- * Run this method to push scraper's info to Supabase
- */
-  init() {
-    return supabase.from('sources').upsert(
-      {
-        id: this.id,
-        name: this.name,
-        locales: this.locales,
-      }
-      , { ignoreDuplicates: true });
-  }
+   * Run this method to push scraper's info to Supabase
+   */
+  async init() {
+    return supabase
+      .from('sources')
+      .upsert([
+        {
+          id: this.id,
+          name: this.name,
+          locales: this.locales
+        },
+      ], { ignoreDuplicates: true })
 
+
+  }
 
   protected async scrapeAllPages(scrapeFn: (page: number) => Promise<any>) {
     const list = [];
