@@ -6,6 +6,14 @@ export const handlePath = (
   baseUrl: string = path.resolve(process.cwd(), './build/src'),
 ) => path.join(baseUrl, filePath);
 
+
+export const readfile = (filePath: string, basePath?: string) => {
+  const fileDir = handlePath(filePath, basePath);
+
+  if (!fs.existsSync(fileDir)) return null;
+
+  return fs.readFileSync(fileDir, { encoding: 'utf-8' });
+}
 export const writeFile = (
   filePath: string,
   data: string,
