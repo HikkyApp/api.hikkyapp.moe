@@ -6,6 +6,7 @@ import { writeFile } from '../utils/index';
 import { getRetriesId } from '../utils/anilist';
 import { AxiosRequestConfig } from 'axios';
 import { readfile } from '../utils/index';
+import { mergeAnimeInfo } from '../utils/data';
 export default class AnimeCrawl extends CrawlBase {
   monitorURl: string;
   type: MediaType.Anime;
@@ -69,7 +70,7 @@ export default class AnimeCrawl extends CrawlBase {
 
       if (!anilistId) continue;
 
-      // fullSources.push(mergeAnimeInfo(source, anilistId));
+      fullSources.push(mergeAnimeInfo(source, anilistId));
 
     }
 
