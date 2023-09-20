@@ -63,3 +63,6 @@ export const fulfilledPromises = <T extends Promise<any>>(promises: T[]) =>
       .filter((result) => result.status === 'fulfilled')
       .map((result) => (result as PromiseFulfilledResult<Awaited<T>>).value),
   );
+
+export const sleep = (ms: number) =>
+  new Promise((resolve) => setTimeout(resolve, ms));

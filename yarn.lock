@@ -1781,6 +1781,7 @@ __metadata:
     "@typescript-eslint/parser": latest
     axios: ^1.5.0
     axios-logger: ^2.7.0
+    axios-rate-limit: ^1.3.0
     axios-retry: ^3.7.0
     cheerio: ^1.0.0-rc.12
     commander: ^11.0.0
@@ -1878,6 +1879,15 @@ __metadata:
     chalk: ^4.1.0
     dateformat: ^3.0.3
   checksum: c0d4d24d53bfb0516f44e49ddee90b40e8903da4a2f73346bfaaec0a58cab54bcd5dba6382c03b1e98d8dcb917c386da713d77774c553a87fc264eb1f65626fe
+  languageName: node
+  linkType: hard
+
+"axios-rate-limit@npm:^1.3.0":
+  version: 1.3.0
+  resolution: "axios-rate-limit@npm:1.3.0"
+  peerDependencies:
+    axios: "*"
+  checksum: 19e963732231d2a0c35c19b0603aa4aeeb55a52bab5edd75908d6df1df86978afb7525b9e79fa17dca281d8d6132072c7f269d9cb90867d0a58da4f713a6dea1
   languageName: node
   linkType: hard
 
