@@ -4,6 +4,9 @@ import sources from '../../sources';
 import { getScraper } from '../../sources';
 import AnimeCrawl from '../../core/AnimeCrawl';
 import { readfile } from '../../utils';
+import { SourceAnime } from '../../types/data';
+import { insertData } from '../../core/Action';
+import { animeActions } from '../../action/anime';
 export default function (program: Command) {
   return program
     .command('crawl:init')
@@ -45,7 +48,12 @@ export default function (program: Command) {
             () => scraperAnime.scrapeAllAnimePages(),
           )
 
-          console.log(source)
+          const sourceMapping = await readFileAndFallBack(
+            `./data/${id}-full.json`,
+            () => scraperAnime.mapSourceToAnilistId(source as SourceAnime[]),
+          );
+
+          await insertData(sourceMapping, animeActions, 'anilistId');
 
         }
       } catch (error) {

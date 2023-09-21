@@ -39,6 +39,7 @@
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "inquirer": "^9.2.11",
+    "lodash": "^4.17.21",
     "node-match-path": "^0.6.3",
     "winston": "^3.10.0",
     "winston-daily-rotate-file": "^4.7.1"
