@@ -57,7 +57,6 @@ export default function (program: Command) {
 
         }
       } catch (error) {
-        console.log(error);
         program.error(error);
       }
     });

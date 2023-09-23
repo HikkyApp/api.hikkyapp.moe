@@ -1,5 +1,6 @@
 import express, { Express } from 'express';
 import dotenv from 'dotenv';
+import { Worker } from 'worker_threads';
 
 dotenv.config();
 
