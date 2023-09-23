@@ -1,0 +1,24 @@
+2023-09-23T08:40:52.683Z error: Cannot find module 'D:\hikky.app.moe\api.hikkyapp.moe\build\src\src\crawl-worker.ts'
+Error: Cannot find module 'D:\hikky.app.moe\api.hikkyapp.moe\build\src\src\crawl-worker.ts'
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1075:15)
+    at Module._load (node:internal/modules/cjs/loader:920:27)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:81:12)
+    at MessagePort.<anonymous> (node:internal/main/worker_thread:159:24)
+    at [nodejs.internal.kHybridDispatch] (node:internal/event_target:735:20)
+    at exports.emitMessage (node:internal/per_context/messageport:23:28)
+2023-09-23T08:41:46.387Z error: Cannot find module 'D:\hikky.app.moe\api.hikkyapp.moe\build\src\src\crawl-worker.js'
+Error: Cannot find module 'D:\hikky.app.moe\api.hikkyapp.moe\build\src\src\crawl-worker.js'
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1075:15)
+    at Module._load (node:internal/modules/cjs/loader:920:27)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:81:12)
+    at MessagePort.<anonymous> (node:internal/main/worker_thread:159:24)
+    at [nodejs.internal.kHybridDispatch] (node:internal/event_target:735:20)
+    at exports.emitMessage (node:internal/per_context/messageport:23:28)
+2023-09-23T08:42:03.702Z error: Cannot find module 'D:\hikky.app.moe\api.hikkyapp.moe\build\src\crawl-worker.js'
+Error: Cannot find module 'D:\hikky.app.moe\api.hikkyapp.moe\build\src\crawl-worker.js'
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1075:15)
+    at Module._load (node:internal/modules/cjs/loader:920:27)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:81:12)
+    at MessagePort.<anonymous> (node:internal/main/worker_thread:159:24)
+    at [nodejs.internal.kHybridDispatch] (node:internal/event_target:735:20)
+    at exports.emitMessage (node:internal/per_context/messageport:23:28)
