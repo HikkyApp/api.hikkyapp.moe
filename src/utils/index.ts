@@ -1,13 +1,10 @@
 import path from 'path';
 import fs from 'fs';
 
-
-
 export const handlePath = (
   filePath: string,
   baseUrl: string = path.resolve(process.cwd(), './build/src'),
 ) => path.join(baseUrl, filePath);
-
 
 export const readfile = (filePath: string, basePath?: string) => {
   const fileDir = handlePath(filePath, basePath);
@@ -15,7 +12,7 @@ export const readfile = (filePath: string, basePath?: string) => {
   if (!fs.existsSync(fileDir)) return null;
 
   return fs.readFileSync(fileDir, { encoding: 'utf-8' });
-}
+};
 export const writeFile = (
   filePath: string,
   data: string,

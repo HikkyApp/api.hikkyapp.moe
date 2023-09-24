@@ -6,7 +6,7 @@ import AnimeCrawl from '../../core/AnimeCrawl';
 import { readfile } from '../../utils';
 import { SourceAnime } from '../../types/data';
 import { insertData } from '../../core/Action';
-import { animeActions } from '../../action/anime';
+import { animeActions } from '../../actions/anime';
 export default function (program: Command) {
   return program
     .command('crawl:init')
@@ -38,15 +38,16 @@ export default function (program: Command) {
 
         await scraper.init();
 
-        console.log(`Starting scraper source: ${id} - This action may take a few hour to complete`)
+        console.log(
+          `Starting scraper source: ${id} - This action may take a few hour to complete`,
+        );
 
         if (type === 'anime') {
           const scraperAnime = scraper as AnimeCrawl;
 
-          const source = readFileAndFallBack(
-            `./data/${id}.json`,
-            () => scraperAnime.scrapeAllAnimePages(),
-          )
+          const source = await readFileAndFallBack(`./data/${id}.json`, () =>
+            scraperAnime.scrapeAllAnimePages(),
+          );
 
           const sourceMapping = await readFileAndFallBack(
             `./data/${id}-full.json`,
@@ -54,7 +55,6 @@ export default function (program: Command) {
           );
 
           await insertData(sourceMapping, animeActions, 'anilistId');
-
         }
       } catch (error) {
         program.error(error);
@@ -66,7 +66,6 @@ const readFileAndFallBack = <T>(
   path: string,
   FallBackFn?: () => Promise<T>,
 ) => {
-
   const fileData: T = JSON.parse(readfile(path));
 
   console.log(path, !!fileData);
@@ -74,5 +73,4 @@ const readFileAndFallBack = <T>(
   if (!fileData) return FallBackFn();
 
   return fileData;
-
-}
+};

@@ -9,7 +9,7 @@ dotenv.config();
 const app: Express = express();
 const port = process.env.PORT;
 
-const workerMain = new Worker(handlePath('./crawl-woker.js'))
+const workerMain = new Worker(handlePath('./crawl-woker.js'));
 
 workerMain.on('message', console.log);
 workerMain.on('error', logError);

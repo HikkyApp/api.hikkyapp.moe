@@ -1,31 +1,34 @@
+export const DEFAULT_MONITOR_INTERVAL = 90_000;
+
 export default class Monitor {
-  // Is monitor disabled
+  // Won't run if disabled
   isDisabled: boolean;
   // Monitor is still working but won't send request.
   isRequestDisabled: boolean;
-
+  // Interval in milliseconds
   interval: number;
-  // Old data
-  oldData: any;
 
-  shouldChange: (oldData: any, newData: any) => boolean;
-  // To get data
   onRequest: () => Promise<any>;
+  shouldChange: (oldData?: any, newData?: any) => Promise<boolean>;
+
+  // Save old data to compare with new data
+  oldData: any;
 
   constructor(
     onRequest: () => Promise<any>,
-    shouldChange: (oldData: any, newData: any) => boolean,
+    shouldChange: (oldData?: any, newData?: any) => Promise<boolean>,
   ) {
-    this.shouldChange = shouldChange;
     this.onRequest = onRequest;
+    this.shouldChange = shouldChange;
 
-    this.interval = 1_200_000; //20 minutes
     this.isDisabled = false;
     this.isRequestDisabled = false;
+    this.interval = DEFAULT_MONITOR_INTERVAL;
   }
 
+  // Will override this function
   onMonitorChange() {
-    console.log('Method onMonitorChange not implemented');
+    console.log('Method not implemented.');
   }
 
   run() {
@@ -37,6 +40,7 @@ export default class Monitor {
   async check() {
     if (this.isRequestDisabled) {
       this.onMonitorChange();
+
       return;
     }
 

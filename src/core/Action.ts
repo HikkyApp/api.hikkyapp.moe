@@ -1,4 +1,3 @@
-
 import chunk from 'lodash/chunk';
 import uniqBy from 'lodash/uniqBy';
 import uniqWith from 'lodash/uniqWith';
@@ -8,13 +7,12 @@ import supabase from '../lib/supabase';
 export const pickArrayOfObject = <T, K extends keyof T>(data: T[], keys: K[]) =>
     data.map((each) => pick(each, keys));
 
-
 export type Keys<T> = (keyof T)[];
 
 export type InsertAction<T, K> = {
     table: string;
     keys: Keys<K>;
-    transform: (data: T[]) => K[];
+    transform?: (data: T[]) => K[];
     uniqueKey?: keyof K | Keys<K>;
     onDone?: (data: K[]) => any;
     upsertOptions?: UpsertOptions;

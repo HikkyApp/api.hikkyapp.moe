@@ -73,7 +73,6 @@ export default class CrawlBase {
     numOfPages: number,
   ) {
     const list = [];
-
     for (let page = 1; page <= numOfPages; page++) {
       const result = await scrapeFn(page);
       console.log(`Scraped page ${page} [${this.id}]`);
@@ -91,29 +90,28 @@ export default class CrawlBase {
    * Run this method to push scraper's info to Supabase
    */
   async init() {
-    return supabase
-      .from('sources')
-      .upsert([
+    return supabase.from('sources').upsert(
+      [
         {
           id: this.id,
           name: this.name,
-          locales: this.locales
+          locales: this.locales,
         },
-      ], { ignoreDuplicates: true })
-
-
+      ],
+      { ignoreDuplicates: true },
+    );
   }
 
   protected async scrapeAllPages(scrapeFn: (page: number) => Promise<any>) {
     const list = [];
     let isEnd = false;
-    let page = 1;
+    let page = 4;
 
     while (!isEnd) {
       try {
         const result = await scrapeFn(page).catch((err) => console.log(err));
 
-        if (page === 3) {
+        if (page === 10) {
           isEnd = true;
 
           break;

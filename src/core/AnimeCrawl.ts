@@ -31,7 +31,7 @@ export default class AnimeCrawl extends CrawlBase {
     return data;
   }
 
-  // scrape anime by page 
+  // scrape anime by page
   async scrapeAnimePages(numOfPages: number): Promise<SourceAnime[]> {
     const sourceAnime: SourceAnime[] = await this.scrapePages(
       this.scrapeAnimePage.bind(this),
@@ -42,17 +42,18 @@ export default class AnimeCrawl extends CrawlBase {
   }
 
   /**
- *Mapping source raw data to anilist id
- * @param sources sources of anime
- * @returns merged sources of anime
- */
+   *Mapping source raw data to anilist id
+   * @param sources sources of anime
+   * @returns merged sources of anime
+   */
   async mapSourceToAnilistId(sources?: SourceAnime[]): Promise<Anime[]> {
-    const fullSources: Anime[] = []
+    const fullSources: Anime[] = [];
 
     if (!sources) {
       sources = JSON.parse(readfile(`./data/${this.id}.json`));
     }
-    if (!sources) throw new Error(`Source ${this.id} is not found in folder data`);
+    if (!sources)
+      throw new Error(`Source ${this.id} is not found in folder data`);
 
     for (const source of sources) {
       if (!source?.titles?.length) continue;
@@ -71,7 +72,6 @@ export default class AnimeCrawl extends CrawlBase {
       if (!anilistId) continue;
 
       fullSources.push(mergeAnimeInfo(source, anilistId));
-
     }
 
     writeFile(
@@ -80,7 +80,6 @@ export default class AnimeCrawl extends CrawlBase {
     );
 
     return fullSources;
-
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

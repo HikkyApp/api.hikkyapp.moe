@@ -1,14 +1,14 @@
-import AnimeVietsubScraper from '../src/sources/anime/avs';
-jest.setTimeout(120000);
 
-test('handlePath', async () => {
-  // const filePath = 'test/testfnc.spec.ts';
-  // const baseUrl = 'C:/Users/username/Documents/Projects/ProjectName/build/src';
-  // const result = handlePath(filePath, baseUrl);
+// // import scrapeNewAnime from '../src/tasks/scrapeNewAnime';
+// import supabase from '../src/lib/supabase';
+// jest.setTimeout(120000);
 
-  const result = new AnimeVietsubScraper();
+// test('handlePath', async () => {
 
-  console.log(result);
+//   const { data: connections, error } = await supabase
+//     .from('anime_source')
+//     .select('*, episodes:episodes(*)')
+//     .in('sourceMediaId', sourceMediaIds)
+//     .eq('sourceId', scraperId);
 
-  // expect(result).toBe('C:/Users/username/Documents/Projects/ProjectName/build/src/test/testfnc.spec.ts');
-});
+// });
