@@ -16,7 +16,7 @@ export default class AnimeVietsubScraper extends AnimeCrawl {
   constructor() {
     super('avs', 'AVS', { baseURL: 'https://animevietsub.fan' });
 
-    this.monitor.isDisabled = true;
+    // this.monitor.isDisabled = true;
 
     this.locales = ['vi'];
   }

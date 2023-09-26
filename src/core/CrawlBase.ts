@@ -63,7 +63,6 @@ export default class CrawlBase {
     this.client.interceptors.request.use((config) => config, axiosErrorLogger);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   shouldMonitorChange(_oldPage: any, _newPage: any): boolean {
     return false;
   }

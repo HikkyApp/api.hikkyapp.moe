@@ -41,12 +41,9 @@ const readClassScrapers = (path: string) => {
 
 const animeScrapers: Record<ScraperId, AnimeCrawl> =
   readScrapers('./sources/anime');
-// const mangaScrapers: Record<ScraperId, AnimeCrawl> =
-//     readScrapers('./scrapers/manga');
+
 const animeClassScrapers: Record<ScraperId, typeof AnimeCrawl> =
   readClassScrapers('./sources/anime');
-// const mangaClassScrapers: Record<MangaScraperId, typeof MangaScraper> =
-//   readClassScrapers('./scrapers/manga');
 
 export const getAnimeScraper = (id: ScraperId) => {
   if (!(id in animeScrapers)) {
@@ -60,16 +57,10 @@ export const getScraper = (id: ScraperId) => {
   if (id in animeScrapers) {
     return getAnimeScraper(id);
   }
-
-  // if (id in mangaScrapers) {
-  //     return getMangaScraper(id);
-  // }
-
   throw new Error(`Unknown scraper id: ${id}`);
 };
 
 export default {
   anime: animeScrapers,
-  // manga: mangaScrapers,
   animeClass: animeClassScrapers,
 };
