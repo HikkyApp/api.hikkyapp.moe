@@ -39,6 +39,7 @@ export default class Monitor {
   async check() {
     console.log('Checking for changes...');
     if (this.isRequestDisabled) {
+      console.log('Request is disabled')
       this.onMonitorChange();
 
       return;

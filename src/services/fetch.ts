@@ -21,8 +21,7 @@ const handleRegisterMonitor = <T extends MediaType>(
     scraper: Scraper<T>,
 ) => {
     console.log('Registering monitor for scraper', scraper.id);
-    scraper.monitor.onMonitorChange = () =>
-        handleFetch(type, scraper).catch(logger.error);
+    scraper.monitor.onMonitorChange = () => handleFetch(type, scraper).catch(logger.error);
     scraper.monitor.run();
 
 };

@@ -2,13 +2,12 @@ import { AxiosInstance } from 'axios';
 import * as cheerio from 'cheerio';
 import AnimeCrawl from '../../core/AnimeCrawl';
 import { SourceAnime } from '../../types/data';
+import { VideoServerType } from "../../core/VideoServer";
 import { fulfilledPromises } from '../../utils';
+import VideoContainer, { VideoContainerType } from '../../core/VideoContainer';
+import Video from '../../core/Video';
+import FileUrl from '../../core/FileUrl';
 
-type Server = {
-  id: string;
-  hash: string;
-  name: string;
-};
 export default class AnimeVietsubScraper extends AnimeCrawl {
   baseUrl: string;
   client: AxiosInstance;
@@ -16,9 +15,15 @@ export default class AnimeVietsubScraper extends AnimeCrawl {
   constructor() {
     super('avs', 'AVS', { baseURL: 'https://animevietsub.fan' });
 
-    // this.monitor.isDisabled = true;
-
     this.locales = ['vi'];
+
+    this.monitor.onRequest = async () => {
+      const data = await fetch(
+        `https://animevietsub.fan/anime-moi/trang-1.html`,
+      );
+
+      return data.text();
+    }
   }
 
   shouldMonitorChange(oldPage: string, newPage: string): boolean {
@@ -32,25 +37,22 @@ export default class AnimeVietsubScraper extends AnimeCrawl {
     const oldTitle = $old(selector).find('h2.Title').text().trim();
     const newTitle = $new(selector).find('h2.Title').text().trim();
 
+    console.log(oldTitle, newTitle);
     return oldTitle !== newTitle;
   }
 
   async scrapeAnimePage(page: number) {
-    // const { data } = await this.client.get(`/anime-moi/trang-${page}.html`);
-    const data = await fetch(
+    const dataRaw = await fetch(
       `https://animevietsub.fan/anime-moi/trang-${page}.html`,
     );
-    const data1 = await data.text();
-    // const $ = cheerio.load(data1);
-    // const { data } = await fetch(`https://animevietsub.fan/anime-moi/trang-${page}.html`);
-    const $ = cheerio.load(data1);
+    const data = await dataRaw.text();
+    const $ = cheerio.load(data);
 
     const list = await fulfilledPromises(
       $('.TPostMv')
         .toArray()
         .map((el) => {
           const source_id = urlToId($(el).find('a').attr('href'));
-          console.log(`source_id : `, source_id);
           return this.scrapeAnime(source_id);
         }),
     );
@@ -59,11 +61,10 @@ export default class AnimeVietsubScraper extends AnimeCrawl {
   }
 
   async scrapeAnime(animeId: string): Promise<SourceAnime> {
-    // const { data } = await this.client.get(``);
-    const data1 = await fetch(
+    const dataRaw = await fetch(
       `https://animevietsub.fan/phim/a-a${animeId}/xem-phim.html`,
     );
-    const data = await data1.text();
+    const data = await dataRaw.text();
 
     const $ = cheerio.load(data);
 
@@ -94,19 +95,71 @@ export default class AnimeVietsubScraper extends AnimeCrawl {
     };
   }
 
-  // async getSources(query: GetSourcesQuery) {
-  //     const { episode_id } = query;
+  async loadVideoServers(episodeId: string): Promise<VideoServerType[]> {
+    const response = await fetch(
+      `https://animevietsub.fan/ajax/player?v=2019a`,
+      {
+        body: `episodeId=${episodeId}&backup=1`,
+        redirect: "manual",
+        method: "post",
+        headers: {
+          "content-type": "application/x-www-form-urlencoded",
+        },
+      }
+    );
+    const data = await response.json();
 
-  //     const priorityServers = ['AKR', 'DU', 'FB'];
-  //     const servers = await this.getServers(Number(episode_id));
-  //     const sources = await this.getBestSources(
-  //         servers,
-  //         priorityServers,
-  //         (server) => this.getVideoUrl(server),
-  //     );
+    const $ = cheerio.load(data?.html);
 
-  //     return { sources };
-  // }
+    const servers: VideoServerType[] = $("a")
+      .toArray()
+      .filter((el) => $(el).data("play") === "api")
+      .map((el) => {
+        const $el = $(el);
+
+        const id = $el.data("id") as string;
+        const hash = $el.data("href") as string;
+        const name = $el.text().trim();
+
+        return { name, extraData: { id, hash }, embed: "" };
+      });
+
+    return servers;
+  }
+  async loadVideoContainer(
+    _: VideoServerType,
+    extraData?: Record<string, string>
+  ): Promise<VideoContainerType> {
+    const { id, hash } = extraData;
+
+    const response = await fetch(
+      `https://animevietsub.fan/ajax/player?v=2019a`,
+      {
+        body: `link=${hash}&id=${id}`,
+        redirect: "manual",
+        method: "post",
+        headers: {
+          "content-type": "application/x-www-form-urlencoded",
+        },
+      }
+    );
+    const data = await response.json();
+
+    const sources: { file: string; label?: string; type: string }[] = data.link;
+
+    return VideoContainer({
+      videos: sources.map((source) =>
+        Video({
+          file: FileUrl({
+            url: !source.file.includes("https")
+              ? `https://${source.file}`
+              : source.file,
+          }),
+          quality: source.label,
+        })
+      ),
+    });
+  }
 
   async getServers(episodeId: number) {
     const { data } = await this.client.post(
@@ -135,27 +188,6 @@ export default class AnimeVietsubScraper extends AnimeCrawl {
       });
 
     return servers;
-  }
-
-  async getVideoUrl(server: Server) {
-    const { data } = await this.client.post(
-      '/ajax/player?v=2019a',
-      `link=${server.hash}&id=${server.id}`,
-      {
-        validateStatus: () => true,
-        maxRedirects: 0,
-      },
-    );
-
-    const proxyServers = ['DU'];
-
-    const sources = data.link;
-
-    return sources.map((source) => {
-      source.useProxy = proxyServers.includes(server.name);
-
-      return source;
-    });
   }
 }
 

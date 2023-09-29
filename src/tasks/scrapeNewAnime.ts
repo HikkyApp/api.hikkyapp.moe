@@ -60,7 +60,6 @@ const handleNonExistAnime = async (anime: SourceAnime[]) => {
 
 export const scrapeNewAnime = async (scraperId: ScraperId) => {
   try {
-
     console.log(`run scrapeNewAnime 1 `, scraperId);
     const scraper = getAnimeScraper(scraperId);
 
@@ -173,7 +172,6 @@ export const scrapeNewAnime = async (scraperId: ScraperId) => {
 
       result.new = insertedAnime;
     }
-    console.log(`test scrpernewAnume`, result, scraper);
     // handleLog(MediaType.Anime, result, scraper);
   } catch (err) {
     logger.error(err.message);

@@ -14,7 +14,7 @@
     "lint": "npm run eslint && npm run prettier",
     "dev": "nodemon",
     "test:watch": "jest --watch",
-    "test:func": "jest test/testfnc.test.ts --silent=false",
+    "test:avs": "jest test/avs.test.ts --silent=false",
     "cli": "node build/src/cli/index.js"
   },
   "repository": {
