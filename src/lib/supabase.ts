@@ -7,7 +7,7 @@ const supabase = createClient(
   {
     auth: {
       persistSession: false,
-    }
-
-  })
+    },
+  },
+);
 export default supabase;

@@ -1,4 +1,4 @@
-export const DEFAULT_MONITOR_INTERVAL = 30_000;
+export const DEFAULT_MONITOR_INTERVAL = 1_000_000;
 
 export default class Monitor {
   // Won't run if disabled
@@ -37,11 +37,8 @@ export default class Monitor {
   }
 
   async check() {
-    console.log('Checking for changes...');
     if (this.isRequestDisabled) {
-      console.log('Request is disabled')
       this.onMonitorChange();
-
       return;
     }
     const data = await this.onRequest();

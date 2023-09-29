@@ -1,4 +1,3 @@
-
 // // import scrapeNewAnime from '../src/tasks/scrapeNewAnime';
 // import supabase from '../src/lib/supabase';
 // jest.setTimeout(120000);

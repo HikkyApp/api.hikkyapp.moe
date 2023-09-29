@@ -104,13 +104,13 @@ export default class CrawlBase {
   protected async scrapeAllPages(scrapeFn: (page: number) => Promise<any>) {
     const list = [];
     let isEnd = false;
-    let page = 4;
+    let page = 1;
 
     while (!isEnd) {
       try {
         const result = await scrapeFn(page).catch((err) => console.log(err));
 
-        if (page === 10) {
+        if (!result) {
           isEnd = true;
 
           break;

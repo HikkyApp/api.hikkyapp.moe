@@ -2,7 +2,7 @@ import { AxiosInstance } from 'axios';
 import * as cheerio from 'cheerio';
 import AnimeCrawl from '../../core/AnimeCrawl';
 import { SourceAnime } from '../../types/data';
-import { VideoServerType } from "../../core/VideoServer";
+import { VideoServerType } from '../../core/VideoServer';
 import { fulfilledPromises } from '../../utils';
 import VideoContainer, { VideoContainerType } from '../../core/VideoContainer';
 import Video from '../../core/Video';
@@ -23,7 +23,7 @@ export default class AnimeVietsubScraper extends AnimeCrawl {
       );
 
       return data.text();
-    }
+    };
   }
 
   shouldMonitorChange(oldPage: string, newPage: string): boolean {
@@ -37,7 +37,6 @@ export default class AnimeVietsubScraper extends AnimeCrawl {
     const oldTitle = $old(selector).find('h2.Title').text().trim();
     const newTitle = $new(selector).find('h2.Title').text().trim();
 
-    console.log(oldTitle, newTitle);
     return oldTitle !== newTitle;
   }
 
@@ -100,35 +99,35 @@ export default class AnimeVietsubScraper extends AnimeCrawl {
       `https://animevietsub.fan/ajax/player?v=2019a`,
       {
         body: `episodeId=${episodeId}&backup=1`,
-        redirect: "manual",
-        method: "post",
+        redirect: 'manual',
+        method: 'post',
         headers: {
-          "content-type": "application/x-www-form-urlencoded",
+          'content-type': 'application/x-www-form-urlencoded',
         },
-      }
+      },
     );
     const data = await response.json();
 
     const $ = cheerio.load(data?.html);
 
-    const servers: VideoServerType[] = $("a")
+    const servers: VideoServerType[] = $('a')
       .toArray()
-      .filter((el) => $(el).data("play") === "api")
+      .filter((el) => $(el).data('play') === 'api')
       .map((el) => {
         const $el = $(el);
 
-        const id = $el.data("id") as string;
-        const hash = $el.data("href") as string;
+        const id = $el.data('id') as string;
+        const hash = $el.data('href') as string;
         const name = $el.text().trim();
 
-        return { name, extraData: { id, hash }, embed: "" };
+        return { name, extraData: { id, hash }, embed: '' };
       });
 
     return servers;
   }
   async loadVideoContainer(
     _: VideoServerType,
-    extraData?: Record<string, string>
+    extraData?: Record<string, string>,
   ): Promise<VideoContainerType> {
     const { id, hash } = extraData;
 
@@ -136,12 +135,12 @@ export default class AnimeVietsubScraper extends AnimeCrawl {
       `https://animevietsub.fan/ajax/player?v=2019a`,
       {
         body: `link=${hash}&id=${id}`,
-        redirect: "manual",
-        method: "post",
+        redirect: 'manual',
+        method: 'post',
         headers: {
-          "content-type": "application/x-www-form-urlencoded",
+          'content-type': 'application/x-www-form-urlencoded',
         },
-      }
+      },
     );
     const data = await response.json();
 
@@ -151,12 +150,12 @@ export default class AnimeVietsubScraper extends AnimeCrawl {
       videos: sources.map((source) =>
         Video({
           file: FileUrl({
-            url: !source.file.includes("https")
+            url: !source.file.includes('https')
               ? `https://${source.file}`
               : source.file,
           }),
           quality: source.label,
-        })
+        }),
       ),
     });
   }

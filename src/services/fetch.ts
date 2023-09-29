@@ -7,47 +7,45 @@ import { MediaType } from '../types/anilist';
 
 type Scraper<T> = T extends MediaType.Anime ? AnimeCrawl : AnimeCrawl;
 
-const handleFetch = async<T extends MediaType>(
-    type: T,
-    scraper: Scraper<T>,
+const handleFetch = async <T extends MediaType>(
+  type: T,
+  scraper: Scraper<T>,
 ) => {
-    if (type === MediaType.Anime) {
-        await scrapeNewAnime(scraper.id as ScraperId);
-    }
+  if (type === MediaType.Anime) {
+    await scrapeNewAnime(scraper.id as ScraperId);
+  }
 };
 
 const handleRegisterMonitor = <T extends MediaType>(
-    type: T,
-    scraper: Scraper<T>,
+  type: T,
+  scraper: Scraper<T>,
 ) => {
-    console.log('Registering monitor for scraper', scraper.id);
-    scraper.monitor.onMonitorChange = () => handleFetch(type, scraper).catch(logger.error);
-    scraper.monitor.run();
-
+  console.log('Registering monitor for scraper', scraper.id);
+  scraper.monitor.onMonitorChange = () =>
+    handleFetch(type, scraper).catch(logger.error);
+  scraper.monitor.run();
 };
 
 export const handleFetchData = async <T extends MediaType>(type: T) => {
-    const animeScrapers = scrapers.anime;
+  const animeScrapers = scrapers.anime;
 
+  let chosenScrapers;
 
-    let chosenScrapers;
+  if (type === MediaType.Anime) {
+    chosenScrapers = animeScrapers;
+  }
+  for (const scraperId in chosenScrapers) {
+    const scraper = chosenScrapers[scraperId];
 
-    if (type === MediaType.Anime) {
-        chosenScrapers = animeScrapers;
-    }
-    for (const scraperId in chosenScrapers) {
-        const scraper = chosenScrapers[scraperId];
-
-        await handleFetch(type, scraper as Scraper<T>);
-    }
+    await handleFetch(type, scraper as Scraper<T>);
+  }
 };
 
 export default async () => {
-    const animeScrapers = scrapers.anime;
+  const animeScrapers = scrapers.anime;
 
-    for (const scraperId in animeScrapers) {
-        const scraper = animeScrapers[scraperId];
-        handleRegisterMonitor(MediaType.Anime, scraper);
-    }
-
+  for (const scraperId in animeScrapers) {
+    const scraper = animeScrapers[scraperId];
+    handleRegisterMonitor(MediaType.Anime, scraper);
+  }
 };

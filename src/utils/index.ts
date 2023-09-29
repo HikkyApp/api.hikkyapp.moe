@@ -66,12 +66,10 @@ export const fulfilledPromises = <T extends Promise<any>>(promises: T[]) =>
 export const sleep = (ms: number) =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
-
 export const parseNumbersFromString = (
   text: string,
-  fallbackNumber = null
+  fallbackNumber = null,
 ): number[] => {
-
   const matches = text.match(/\d+([.,][\d{1,2}])?/g);
 
   if (!matches) return [fallbackNumber];
@@ -79,6 +77,9 @@ export const parseNumbersFromString = (
   return matches.map(Number);
 };
 
-export const parseNumberFromString = (text: string, fallbackNumber = null): number => {
+export const parseNumberFromString = (
+  text: string,
+  fallbackNumber = null,
+): number => {
   return parseNumbersFromString(text, fallbackNumber)[0];
 };

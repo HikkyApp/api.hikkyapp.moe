@@ -8,7 +8,7 @@
     "start": "node build/src/main.js",
     "test": "jest",
     "build": "tsc -p tsconfig.json",
-    "prebuild": "npm run lint",
+    "prebuild": "npm run lint && tsc -p tsconfig.json",
     "eslint": "eslint --ext .ts src/** --fix",
     "prettier": "prettier --write .",
     "lint": "npm run eslint && npm run prettier",
