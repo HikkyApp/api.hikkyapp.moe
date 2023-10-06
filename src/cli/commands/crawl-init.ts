@@ -51,7 +51,7 @@ export default function (program: Command) {
 
           const sourceMapping = await readFileAndFallBack(
             `./data/${id}-full.json`,
-            () => scraperAnime.mapSourceToAnilistId(source as SourceAnime[]),
+            () => scraperAnime.scrapeAnilist(source as SourceAnime[]),
           );
 
           await insertData(sourceMapping, animeActions, 'anilistId');

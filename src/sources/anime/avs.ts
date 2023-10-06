@@ -7,7 +7,6 @@ import { fulfilledPromises } from '../../utils';
 import VideoContainer, { VideoContainerType } from '../../core/VideoContainer';
 import Video from '../../core/Video';
 import FileUrl from '../../core/FileUrl';
-
 export default class AnimeVietsubScraper extends AnimeCrawl {
   baseUrl: string;
   client: AxiosInstance;
@@ -39,35 +38,61 @@ export default class AnimeVietsubScraper extends AnimeCrawl {
 
     return oldTitle !== newTitle;
   }
-
   async scrapeAnimePage(page: number) {
-    const dataRaw = await fetch(
-      `https://animevietsub.fan/anime-moi/trang-${page}.html`,
-    );
+    const dataRaw = await fetch(`https://animevietsub.fan/anime-moi/trang-${page}.html`)
+
     const data = await dataRaw.text();
+
     const $ = cheerio.load(data);
 
     const list = await fulfilledPromises(
       $('.TPostMv')
         .toArray()
-        .map((el) => {
+        .map(async (el) => {
           const source_id = urlToId($(el).find('a').attr('href'));
-          return this.scrapeAnime(source_id);
+          console.log(`source_id : `, source_id);
+          return await this.checkAnimeCountry(source_id);
         }),
     );
 
     return list.filter((a) => a);
   }
+  async checkAnimeCountry(animeId: string) {
+    const dataRaw = await fetch(
+      `https://animevietsub.fan/phim/a-a${animeId}`,
+
+    );
+    const data = await dataRaw.text();
+
+    const $ = cheerio.load(data);
+
+    let country = '';
+    // @ts-ignore
+    $('ul.InfoList li').each(function () {
+      if ($(this).text().startsWith('Quốc gia:')) {
+        country = $(this).text().split(':')[1].trim();
+      }
+    });
+
+    if (country.toLowerCase() === 'trung quốc') {
+      console.log(`Skip anime ${animeId} because it's from China`);
+      return;
+    }
+
+    return await this.scrapeAnime(animeId);
+  }
 
   async scrapeAnime(animeId: string): Promise<SourceAnime> {
     const dataRaw = await fetch(
       `https://animevietsub.fan/phim/a-a${animeId}/xem-phim.html`,
+
     );
     const data = await dataRaw.text();
 
     const $ = cheerio.load(data);
 
     const title = $('header .Title').text().trim();
+
     const altTitles = this.parseTitle($('header .SubTitle').text().trim());
 
     const { titles } = this.filterTitles([title, ...altTitles]);
@@ -85,7 +110,6 @@ export default class AnimeVietsubScraper extends AnimeCrawl {
         return { name, sourceEpisodeId, sourceMediaId: animeId };
       })
       .filter((a) => a);
-
     return {
       titles,
       episodes,

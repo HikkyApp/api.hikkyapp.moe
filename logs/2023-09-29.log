@@ -1,0 +1,21 @@
+2023-09-29T09:43:28.831Z error: error Request failed with status code 520
+AxiosError: Request failed with status code 520
+    at settle (D:\hikky.app.moe\api.hikkyapp.moe\node_modules\axios\dist\node\axios.cjs:1913:12)
+    at IncomingMessage.handleStreamEnd (D:\hikky.app.moe\api.hikkyapp.moe\node_modules\axios\dist\node\axios.cjs:2995:11)
+    at IncomingMessage.emit (node:events:525:35)
+    at endReadableNT (node:internal/streams/readable:1359:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+2023-09-29T09:43:37.966Z error: error Request failed with status code 520
+AxiosError: Request failed with status code 520
+    at settle (D:\hikky.app.moe\api.hikkyapp.moe\node_modules\axios\dist\node\axios.cjs:1913:12)
+    at IncomingMessage.handleStreamEnd (D:\hikky.app.moe\api.hikkyapp.moe\node_modules\axios\dist\node\axios.cjs:2995:11)
+    at IncomingMessage.emit (node:events:525:35)
+    at endReadableNT (node:internal/streams/readable:1359:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+2023-09-29T09:43:45.262Z error: error Request failed with status code 520
+AxiosError: Request failed with status code 520
+    at settle (D:\hikky.app.moe\api.hikkyapp.moe\node_modules\axios\dist\node\axios.cjs:1913:12)
+    at IncomingMessage.handleStreamEnd (D:\hikky.app.moe\api.hikkyapp.moe\node_modules\axios\dist\node\axios.cjs:2995:11)
+    at IncomingMessage.emit (node:events:525:35)
+    at endReadableNT (node:internal/streams/readable:1359:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)

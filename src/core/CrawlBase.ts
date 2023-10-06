@@ -15,6 +15,7 @@ export default class CrawlBase {
   name: string;
   baseURL: string;
   blacklistTitles: string[];
+  blacklistCountry: string[];
   monitor: Monitor;
   locales: string[];
   scrapingPages: number;
@@ -35,6 +36,7 @@ export default class CrawlBase {
     this.id = id;
     this.name = name;
     this.blacklistTitles = ['live action'];
+    this.blacklistCountry = ['china', 'Trung Quốc'];
     this.scrapingPages = 2;
     this.client = axios.create(config);
     this.baseURL = axiosConfig.baseURL;
@@ -108,11 +110,10 @@ export default class CrawlBase {
 
     while (!isEnd) {
       try {
-        const result = await scrapeFn(page).catch((err) => console.log(err));
+        const result = await scrapeFn(page).catch((err) => logger.error('error', err));
 
-        if (!result) {
+        if (page === 165) {
           isEnd = true;
-
           break;
         }
 
@@ -120,7 +121,6 @@ export default class CrawlBase {
 
         if (result.length === 0) {
           isEnd = true;
-
           break;
         }
 
@@ -144,6 +144,14 @@ export default class CrawlBase {
     );
   }
 
+  async removeBlacklistCountrySources<T extends SourceAnime>(
+    sources: T[],
+  ) {
+    return sources.filter(
+      (source) =>
+        source?.titles.some((title) => !this.blacklistCountry.includes(title)),
+    );
+  }
   /**
    *
    * @param titles an array of titles

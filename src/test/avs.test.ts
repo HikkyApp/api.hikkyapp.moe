@@ -1,28 +1,45 @@
-import AnimeVietSub from '../sources/anime/avs';
 
-jest.setTimeout(15000);
+import * as cheerio from 'cheerio';
 
-test('return video stream hls avs', async () => {
-  const avs = new AnimeVietSub();
+// test('return video stream hls avs', async () => {
 
-  const videoServers = await avs.loadVideoServers('223');
+//   // const videoServers = await avs.loadVideoServers('223');
 
-  // const videoContainer = await avs.loadVideoContainer(videoServers[0], videoServers[0].extraData)
+//   // const videoContainer = await avs.loadVideoContainer(videoServers[0], videoServers[0].extraData)
 
-  // // console.log(data, videoServers, videoContainer)
+//   // // console.log(data, videoServers, videoContainer)
 
-  // const headers = { "referer": "https://animevietsub.fan/", "origin": "https://animevietsub.fan" }
+//   // const headers = { "referer": "https://animevietsub.fan/", "origin": "https://animevietsub.fan" }
 
-  // const videoSource = videoContainer.videos[0].file.url.replace('https:////', 'https://');
+//   // const videoSource = videoContainer.videos[0].file.url.replace('https:////', 'https://');
 
-  // const source = `http://localhost:3031/m3u8-proxy?url=${encodeURIComponent(videoSource)}&headers=${encodeURIComponent(JSON.stringify(headers))}`
+//   // const source = `http://localhost:3031/m3u8-proxy?url=${encodeURIComponent(videoSource)}&headers=${encodeURIComponent(JSON.stringify(headers))}`
 
-  console.log(videoServers);
+const testFunc = async () => {
+  for (let i = 0; i < 100; i++) {
+    const dataRaw = await fetch(
+      `https://animevietsub.fan/anime-moi/trang-${i}.html`,
+    );
+    const data = await dataRaw.text();
+    const $ = cheerio.load(data);
+    $('.TPostMv')
+      .toArray()
+      .map((el) => {
+        const source_id = $(el).find('a').attr('href');
+        console.log(source_id);
+      })
 
-  // // console.log(videoContainer.videos[0].file.url)
+  };
+}
 
-  // console.log(source)
-  // console.log(videoSource)
+testFunc();
 
-  // expect(data).toBeDefined()
-});
+
+
+//   // // console.log(videoContainer.videos[0].file.url)
+
+//   // console.log(source)
+//   // console.log(videoSource)
+
+//   // expect(data).toBeDefined()
+// });

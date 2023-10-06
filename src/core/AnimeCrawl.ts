@@ -7,9 +7,41 @@ import { getRetriesId } from '../utils/anilist';
 import { AxiosRequestConfig } from 'axios';
 import { readfile } from '../utils/index';
 import { mergeAnimeInfo } from '../utils/data';
+
+export type Subtitle = {
+  language: string;
+  lang: string;
+  file: string;
+};
+
+export type Font = {
+  file: string;
+};
+
+export type VideoSource = {
+  file: string;
+  label?: string;
+  useProxy?: boolean;
+  proxy?: any;
+};
+
+export type AnimeSource = {
+  sources: VideoSource[];
+  subtitles?: Subtitle[];
+  fonts?: Font[];
+  thumbnail?: string;
+};
+
+export type GetSourcesQuery = {
+  source_id: string;
+  source_media_id: string;
+  episode_id: string;
+  request: Request;
+};
+
 export default class AnimeCrawl extends CrawlBase {
-  monitorURl: string;
   type: MediaType.Anime;
+  monitorURL: string;
 
   constructor(
     id: string,
@@ -18,11 +50,11 @@ export default class AnimeCrawl extends CrawlBase {
   ) {
     super(id, name, axiosConfig);
 
-    this.monitorURl = axiosConfig.baseURL;
-
+    this.monitorURL = axiosConfig.baseURL;
+    this.blacklistTitles = ["one piece"]
     this.type = MediaType.Anime;
   }
-  // crawl all page default: 1 -> end
+
   async scrapeAllAnimePages(): Promise<SourceAnime[]> {
     const data = await this.scrapeAllPages(this.scrapeAnimePage.bind(this));
 
@@ -31,32 +63,25 @@ export default class AnimeCrawl extends CrawlBase {
     return data;
   }
 
-  // scrape anime by page
-  async scrapeAnimePages(numOfPages: number): Promise<SourceAnime[]> {
-    const sourceAnime: SourceAnime[] = await this.scrapePages(
-      this.scrapeAnimePage.bind(this),
-      numOfPages,
-    );
-
-    return sourceAnime.filter((anime) => anime?.episodes?.length);
-  }
-
   /**
-   *Mapping source raw data to anilist id
+   * Scrape data from anilist then merge it with data from source
    * @param sources sources of anime
    * @returns merged sources of anime
    */
-  async mapSourceToAnilistId(sources?: SourceAnime[]): Promise<Anime[]> {
-    const fullSources: Anime[] = [];
+  async scrapeAnilist(sources?: SourceAnime[]): Promise<Anime[]> {
+    const fullSources = [];
 
     if (!sources) {
       sources = JSON.parse(readfile(`./data/${this.id}.json`));
     }
-    if (!sources)
-      throw new Error(`Source ${this.id} is not found in folder data`);
+
+    if (!sources?.length) {
+      throw new Error('No sources');
+    }
 
     for (const source of sources) {
       if (!source?.titles?.length) continue;
+
       let anilistId: number;
 
       if (source.anilistId) {
@@ -82,12 +107,24 @@ export default class AnimeCrawl extends CrawlBase {
     return fullSources;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async scrapeAnimePage(_page: number): Promise<SourceAnime[]> {
-    throw new Error(`Method scrapeAnimePage not implemented`);
+  async scrapeAnimePages(numOfPages: number): Promise<SourceAnime[]> {
+    const sourceAnime: SourceAnime[] = await this.scrapePages(
+      this.scrapeAnimePage.bind(this),
+      numOfPages,
+    );
+
+    return sourceAnime.filter((anime) => anime?.episodes?.length);
   }
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
+  async scrapeAnimePage(_page: number): Promise<any[]> {
+    throw new Error('scrapeAnimePage not implemented');
+  }
+
   async scrapeAnime(_animeId: string): Promise<SourceAnime> {
-    throw new Error('Method scrapeAnime not implemented');
+    throw new Error('scrapeAnime not implemented');
+  }
+
+  async getSources(_ids: GetSourcesQuery): Promise<AnimeSource> {
+    throw new Error('getSources not implemented');
   }
 }
