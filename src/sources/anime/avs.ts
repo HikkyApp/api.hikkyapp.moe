@@ -73,13 +73,13 @@ export default class AnimeVietsubScraper extends AnimeCrawl {
         country = $(this).text().split(':')[1].trim();
       }
     });
+    // if (country.toLowerCase().replace(/[!@#$%^&*]/g, "") === 'trung quốc') {
+    //   console.log(`Skip anime ${animeId} because it's from China`);
+    //   return;
+    // }
 
-    if (country.toLowerCase() === 'trung quốc') {
-      console.log(`Skip anime ${animeId} because it's from China`);
-      return;
-    }
-
-    return await this.scrapeAnime(animeId);
+    // return await this.scrapeAnime(animeId);
+    console.log(`country : `, country.toLowerCase().replace(/[^a-zA-Z ]/g, ""));
   }
 
   async scrapeAnime(animeId: string): Promise<SourceAnime> {
