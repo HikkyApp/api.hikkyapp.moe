@@ -110,7 +110,9 @@ export default class CrawlBase {
 
     while (!isEnd) {
       try {
-        const result = await scrapeFn(page).catch((err) => logger.error('error', err));
+        const result = await scrapeFn(page).catch((err) =>
+          logger.error('error', err),
+        );
 
         if (page === 165) {
           isEnd = true;
@@ -144,9 +146,7 @@ export default class CrawlBase {
     );
   }
 
-  async removeBlacklistCountrySources<T extends SourceAnime>(
-    sources: T[],
-  ) {
+  async removeBlacklistCountrySources<T extends SourceAnime>(sources: T[]) {
     return sources.filter(
       (source) =>
         source?.titles.some((title) => !this.blacklistCountry.includes(title)),

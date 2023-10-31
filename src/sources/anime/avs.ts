@@ -7,6 +7,7 @@ import { fulfilledPromises } from '../../utils';
 import VideoContainer, { VideoContainerType } from '../../core/VideoContainer';
 import Video from '../../core/Video';
 import FileUrl from '../../core/FileUrl';
+import { GetSourcesQuery } from '../../core/AnimeCrawl';
 export default class AnimeVietsubScraper extends AnimeCrawl {
   baseUrl: string;
   client: AxiosInstance;
@@ -39,7 +40,9 @@ export default class AnimeVietsubScraper extends AnimeCrawl {
     return oldTitle !== newTitle;
   }
   async scrapeAnimePage(page: number) {
-    const dataRaw = await fetch(`https://animevietsub.fan/anime-moi/trang-${page}.html`)
+    const dataRaw = await fetch(
+      `https://animevietsub.fan/anime-moi/trang-${page}.html`,
+    );
 
     const data = await dataRaw.text();
 
@@ -58,10 +61,7 @@ export default class AnimeVietsubScraper extends AnimeCrawl {
     return list.filter((a) => a);
   }
   async checkAnimeCountry(animeId: string) {
-    const dataRaw = await fetch(
-      `https://animevietsub.fan/phim/a-a${animeId}`,
-
-    );
+    const dataRaw = await fetch(`https://animevietsub.fan/phim/a-a${animeId}`);
     const data = await dataRaw.text();
 
     const $ = cheerio.load(data);
@@ -79,13 +79,12 @@ export default class AnimeVietsubScraper extends AnimeCrawl {
     // }
 
     // return await this.scrapeAnime(animeId);
-    console.log(`country : `, country.toLowerCase().replace(/[^a-zA-Z ]/g, ""));
+    console.log(`country : `, country.toLowerCase().replace(/[^a-zA-Z ]/g, ''));
   }
 
   async scrapeAnime(animeId: string): Promise<SourceAnime> {
     const dataRaw = await fetch(
       `https://animevietsub.fan/phim/a-a${animeId}/xem-phim.html`,
-
     );
     const data = await dataRaw.text();
 
@@ -211,6 +210,32 @@ export default class AnimeVietsubScraper extends AnimeCrawl {
       });
 
     return servers;
+  }
+
+  async getSources(query: GetSourcesQuery) {
+    const { episode_id } = query;
+
+    // const priorityServers = ['DU', 'FB', 'AKR'];
+    // const servers = await this.getServers(Number(episode_id));
+    // console.log(`test serve`, servers);
+    const headers = { referer: this.baseURL, origin: this.baseURL };
+
+    const videoServers = await this.loadVideoServers(episode_id);
+
+    const videoContainer = await this.loadVideoContainer(
+      videoServers[0],
+      videoServers[0].extraData,
+    );
+
+    return {
+      sources: videoContainer.videos.map((video) => ({
+        file: `http://localhost:3031/m3u8-proxy?url=${encodeURIComponent(
+          video.file.url.replace('https:////', 'https://'),
+        )}&headers=${encodeURIComponent(JSON.stringify(headers))}`,
+        label: video.quality,
+        type: 'hls',
+      })),
+    };
   }
 }
 

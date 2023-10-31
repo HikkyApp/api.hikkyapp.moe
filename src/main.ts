@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import { Worker } from 'worker_threads';
 import { handlePath } from './utils';
-import { logError, returnError } from './errors/errorHandler';
+import { logError } from './errors/errorHandler';
 import routes from './routes';
 dotenv.config();
 

@@ -51,7 +51,7 @@ export default class AnimeCrawl extends CrawlBase {
     super(id, name, axiosConfig);
 
     this.monitorURL = axiosConfig.baseURL;
-    this.blacklistTitles = ["one piece"]
+    this.blacklistTitles = ['one piece'];
     this.type = MediaType.Anime;
   }
 

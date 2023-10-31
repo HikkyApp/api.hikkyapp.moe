@@ -1,5 +1,7 @@
 import path from 'path';
 import fs from 'fs';
+import { VideoSource } from '../core/AnimeCrawl';
+// import { ImageSource } from '../core/MangaScraper';
 
 export const handlePath = (
   filePath: string,
@@ -82,4 +84,20 @@ export const parseNumberFromString = (
   fallbackNumber = null,
 ): number => {
   return parseNumbersFromString(text, fallbackNumber)[0];
+};
+
+export const handleProxy = <T extends VideoSource | any>(sources: T[]): T[] => {
+  const sourcesWithProxy = sources.map((source: VideoSource | any) => {
+    if (source.proxy) return source;
+
+    source.proxy = {
+      redirectWithProxy: true,
+      followRedirect: true,
+    };
+
+    return source;
+  });
+
+  // @ts-ignore
+  return sourcesWithProxy;
 };

@@ -1,6 +1,7 @@
 import fs from 'fs';
 import { handlePath } from '../utils';
 import AnimeCrawl from '../core/AnimeCrawl';
+import supabase from '../lib/supabase';
 
 export type ScraperId = string;
 
@@ -19,6 +20,27 @@ const readScrapers = (path: string) => {
     scrapers[file] = new Scraper();
   }
   return scrapers;
+};
+
+export const getAnimeClassScraper = (id: ScraperId) => {
+  if (!(id in animeClassScrapers)) {
+    return null;
+  }
+
+  // @ts-ignore
+  return new animeClassScrapers[id]();
+};
+
+export const getRemoteScraper = async (id: string) => {
+  const { data, error } = await supabase
+    .from('sources')
+    .select('id')
+    .eq('id', id)
+    .single();
+
+  if (!data || error) throw new Error(`Unknown scraper id: ${id}`);
+
+  return data;
 };
 
 const readClassScrapers = (path: string) => {

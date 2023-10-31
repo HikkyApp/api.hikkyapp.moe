@@ -1,11 +1,13 @@
-
 import * as cheerio from 'cheerio';
 
 // test('return video stream hls avs', async () => {
 
-//   // const videoServers = await avs.loadVideoServers('223');
+// const videoServers = await avs.loadVideoServers('223');
 
-//   // const videoContainer = await avs.loadVideoContainer(videoServers[0], videoServers[0].extraData)
+// const videoContainer = await avs.loadVideoContainer(
+//   videoServers[0],
+//   videoServers[0].extraData,
+// );
 
 //   // // console.log(data, videoServers, videoContainer)
 
@@ -27,14 +29,11 @@ const testFunc = async () => {
       .map((el) => {
         const source_id = $(el).find('a').attr('href');
         console.log(source_id);
-      })
-
-  };
-}
+      });
+  }
+};
 
 testFunc();
-
-
 
 //   // // console.log(videoContainer.videos[0].file.url)
 
